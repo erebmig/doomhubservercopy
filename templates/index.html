@@ -1,1 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>DOOMHUB | PURPLE EDITION</title>
+    <style>
+        :root { --neon: #bb86fc; --bg: #030303; --card: #0a0a0a; }
+        body { background: var(--bg); color: var(--neon); font-family: 'Consolas', monospace; margin: 0; display: flex; height: 100vh; }
+        
+        .sidebar { width: 260px; border-right: 1px solid #1a1a1a; padding: 25px; background: #050505; }
+        .sidebar h2 { color: #fff; text-shadow: 0 0 10px var(--neon); border-bottom: 2px solid var(--neon); padding-bottom: 10px; }
+        .nav-item { padding: 15px; margin: 10px 0; cursor: pointer; border: 1px solid transparent; transition: 0.3s; }
+        .nav-item:hover, .active { background: rgba(187, 134, 252, 0.1); border: 1px solid var(--neon); }
+
+        .main { flex: 1; padding: 40px; display: flex; flex-direction: column; gap: 20px; overflow-y: auto; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        
+        .panel { background: var(--card); border: 1px solid #1a1a1a; padding: 25px; box-shadow: 0 0 15px rgba(0,0,0,0.5); }
+        label { display: block; margin-bottom: 10px; font-size: 0.8rem; letter-spacing: 1px; }
+        input { width: 90%; background: #000; border: 1px solid #222; padding: 12px; color: var(--neon); outline: none; margin-bottom: 15px; }
+        input:focus { border-color: var(--neon); }
+
+        button { width: 100%; background: transparent; color: var(--neon); border: 1px solid var(--neon); padding: 15px; cursor: pointer; font-weight: bold; text-transform: uppercase; transition: 0.3s; }
+        button:hover { background: var(--neon); color: #000; box-shadow: 0 0 20px var(--neon); }
+        .check-btn { margin-bottom: 10px; border-color: #6200ee; color: #6200ee; }
+
+        #terminal { background: #000; border: 1px solid #1a1a1a; height: 200px; padding: 15px; font-size: 0.85rem; overflow-y: auto; }
+        .status-msg { margin-top: 10px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <h2>DOOMHUB</h2>
+        <div class="nav-item active">CLONER</div>
+        <div class="nav-item">TOKEN CHECKER</div>
+    </div>
+
+    <div class="main">
+        <div class="grid">
+            <div class="panel">
+                <label>ACCOUNT TOKEN</label>
+                <input type="password" id="token" placeholder="Enter token...">
+                <button class="check-btn" onclick="checkToken()">CHECK TOKEN</button>
+                <div id="token-status" class="status-msg"></div>
+            </div>
+            <div class="panel">
+                <label>SOURCE ID</label>
+                <input type="text" id="source" placeholder="123456...">
+                <label>TARGET ID</label>
+                <input type="text" id="target" placeholder="789012...">
+            </div>
+        </div>
+        
+        <button onclick="launchClone()" style="font-size: 1.5rem;">START CLONE SEQUENCE</button>
+        
+        <div id="terminal"></div>
+    </div>
+
+    <script>
+        async function checkToken() {
+            const token = document.getElementById('token').value;
+            const status = document.getElementById('token-status');
+            status.innerText = "CHECKING...";
+            const resp = await fetch('/api/check', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({token})
+            });
+            const data = await resp.json();
+            status.innerText = data.valid ? "TOKEN VALID ✓" : "TOKEN INVALID ✗";
+            status.style.color = data.valid ? "#00ff41" : "#ff003c";
+        }
+
+        function launchClone() {
+            fetch('/api/clone', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    token: document.getElementById('token').value,
+                    source: document.getElementById('source').value,
+                    target: document.getElementById('target').value
+                })
+            });
+        }
+
+        setInterval(() => {
+            fetch('/api/logs').then(r => r.json()).then(d => {
+                const t = document.getElementById('terminal');
+                t.innerHTML = d.logs.join('<br>');
+                t.scrollTop = t.scrollHeight;
+            });
+        }, 1500);
+    </script>
+</body>
+</html>
 
