@@ -11,7 +11,7 @@
             --accent-color: #000000;
             --text-main: #1d1d1f;
             --text-dim: #86868b;
-            --border-color: #d2d2d7;
+            --border-color: #e5e5e7;
         }
 
         body { 
@@ -19,154 +19,123 @@
             color: var(--text-main); 
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
             display: flex; 
-            flex-direction: column; /* Footer için dikey hizalama */
+            flex-direction: column; 
             justify-content: center; 
             align-items: center; 
             height: 100vh; 
             margin: 0; 
             overflow: hidden;
+            -webkit-font-smoothing: antialiased;
         }
 
         /* --- Loading Screen --- */
         #loader {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0; width: 100%; height: 100%;
             background: #fff;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
             z-index: 9999;
             transition: opacity 0.5s ease, visibility 0.5s;
         }
 
         .spinner {
-            width: 40px;
-            height: 40px;
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid var(--accent-color);
+            width: 32px; height: 32px;
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid var(--accent-color);
             border-radius: 50%;
-            animation: spin 1s linear infinite;
+            animation: spin 0.8s linear infinite;
         }
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        .loader-text {
-            margin-top: 15px;
-            font-size: 14px;
-            letter-spacing: 1px;
-            font-weight: 500;
-        }
-
-        /* --- Main UI --- */
+        /* --- Main UI (Küçültülmüş) --- */
         .container { 
             background: var(--container-bg); 
-            padding: 40px; 
+            padding: 30px 25px; /* İç boşlukları daralttık */
             border-radius: 12px; 
             border: 1px solid var(--border-color);
-            width: 380px; 
+            width: 320px; /* Genişliği 380'den 320'ye çektik */
             opacity: 0;
-            transform: translateY(10px);
-            transition: all 0.6s ease-out;
-            z-index: 1;
+            transform: translateY(8px);
+            transition: all 0.5s ease-out;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
         }
 
-        .container.loaded {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        .container.loaded { opacity: 1; transform: translateY(0); }
 
         h2 { 
             margin-top: 0; 
             font-weight: 600; 
             text-align: center; 
-            font-size: 22px;
-            letter-spacing: -0.5px;
+            font-size: 19px; /* Başlığı küçülttük */
+            letter-spacing: -0.4px;
+            margin-bottom: 25px;
         }
 
-        .input-group { margin-bottom: 15px; }
+        .input-group { margin-bottom: 12px; }
 
         label { 
             display: block; 
-            margin-bottom: 8px; 
-            font-size: 12px; 
+            margin-bottom: 6px; 
+            font-size: 11px; /* Etiketleri küçülttük */
             font-weight: 600;
-            text-transform: uppercase;
             color: var(--text-dim); 
+            letter-spacing: 0.2px;
         }
 
         input { 
             width: 100%; 
-            padding: 12px; 
+            padding: 10px; /* Input içlerini daralttık */
             border: 1px solid var(--border-color); 
             border-radius: 6px; 
             box-sizing: border-box; 
-            font-size: 14px; 
+            font-size: 13px; /* Yazı fontunu küçülttük */
             outline: none; 
             background: #fff;
-            transition: border 0.2s;
         }
-
-        input:focus { border-color: var(--accent-color); }
 
         button { 
             width: 100%; 
-            padding: 14px; 
+            padding: 12px; 
             margin-top: 10px; 
             background: var(--accent-color); 
             color: #fff; 
             border: none; 
             border-radius: 6px; 
-            font-size: 15px; 
+            font-size: 14px; 
             font-weight: 500; 
             cursor: pointer; 
-            transition: opacity 0.2s;
         }
-
-        button:hover { opacity: 0.8; }
 
         #log-area { 
-            margin-top: 25px; 
-            font-size: 12px; 
+            margin-top: 20px; 
+            font-size: 11px; 
             color: var(--text-dim); 
             border-top: 1px solid var(--border-color); 
-            padding-top: 15px; 
-            min-height: 20px;
+            padding-top: 12px; 
             text-align: center;
         }
 
-        /* --- Footer Style --- */
+        /* --- Footer --- */
         footer {
-            margin-top: 20px;
+            margin-top: 15px;
             text-align: center;
-            font-size: 11px;
+            font-size: 10px;
             color: var(--text-dim);
             opacity: 0;
-            transition: opacity 1s ease-in 1s; /* Loader bittikten sonra yavaşça gelir */
+            transition: opacity 1s ease-in 1s;
         }
 
-        footer.visible {
-            opacity: 1;
-        }
+        footer.visible { opacity: 0.8; }
 
-        .copyright {
-            margin-top: 5px;
-            font-weight: 400;
-            letter-spacing: 0.5px;
-        }
+        b { color: #000; font-weight: 600; }
     </style>
 </head>
 <body>
 
     <div id="loader">
         <div class="spinner"></div>
-        <div class="loader-text">DOOMHUB</div>
     </div>
 
     <div class="container" id="main-content">
@@ -174,17 +143,17 @@
         
         <div class="input-group">
             <label>Account Token</label>
-            <input type="password" id="token" placeholder="••••••••••••••••">
+            <input type="password" id="token" placeholder="Token here">
         </div>
         
         <div class="input-group">
-            <label>Source Server ID</label>
-            <input type="text" id="source" placeholder="000000000000">
+            <label>Source Server</label>
+            <input type="text" id="source" placeholder="ID">
         </div>
         
         <div class="input-group">
-            <label>Target Server ID</label>
-            <input type="text" id="target" placeholder="000000000000">
+            <label>Target Server</label>
+            <input type="text" id="target" placeholder="ID">
         </div>
         
         <button onclick="startClone()">Start Process</button>
@@ -194,27 +163,21 @@
 
     <footer id="footer">
         <div>Made by <b>Doomhub</b> & <b>Tader</b></div>
-        <div class="copyright">© 2026 Doomhub Cloner. All rights reserved.</div>
+        <div style="margin-top:3px">© 2026 Doomhub Cloner.</div>
     </footer>
 
     <script>
         window.addEventListener('load', () => {
             setTimeout(() => {
-                const loader = document.getElementById('loader');
-                const content = document.getElementById('main-content');
-                const footer = document.getElementById('footer');
-                
-                loader.style.opacity = '0';
-                loader.style.visibility = 'hidden';
-                content.classList.add('loaded');
-                footer.classList.add('visible');
-            }, 1500);
+                document.getElementById('loader').style.opacity = '0';
+                document.getElementById('loader').style.visibility = 'hidden';
+                document.getElementById('main-content').classList.add('loaded');
+                document.getElementById('footer').classList.add('visible');
+            }, 1000);
         });
 
         function startClone() {
-            const log = document.getElementById('log-area');
-            log.innerText = "Connecting to API...";
-            
+            document.getElementById('log-area').innerText = "Connecting...";
             fetch('/api/clone', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
@@ -223,8 +186,6 @@
                     source: document.getElementById('source').value,
                     target: document.getElementById('target').value
                 })
-            }).catch(err => {
-                log.innerText = "Error: Connection failed";
             });
         }
 
@@ -232,7 +193,7 @@
             try {
                 const r = await fetch('/api/logs');
                 const d = await r.json();
-                if (d.logs && d.logs.length > 0) {
+                if (d.logs.length > 0) {
                     document.getElementById('log-area').innerText = d.logs[d.logs.length - 1];
                 }
             } catch(e) {}
