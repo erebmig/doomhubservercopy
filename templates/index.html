@@ -1,80 +1,88 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>DOOMHUB | PURPLE EDITION</title>
+    <title>DOOMHUB | PREMIUM CLONER</title>
     <style>
-        :root { --neon: #bb86fc; --bg: #030303; --card: #0a0a0a; }
-        body { background: var(--bg); color: var(--neon); font-family: 'Consolas', monospace; margin: 0; display: flex; height: 100vh; }
+        :root { --accent: #7c3aed; --bg: #0c0c0e; --panel: #141417; --border: #26262b; --text: #a1a1aa; }
+        body { background: var(--bg); color: #e4e4e7; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; display: flex; height: 100vh; overflow: hidden; }
         
-        .sidebar { width: 260px; border-right: 1px solid #1a1a1a; padding: 25px; background: #050505; }
-        .sidebar h2 { color: #fff; text-shadow: 0 0 10px var(--neon); border-bottom: 2px solid var(--neon); padding-bottom: 10px; }
-        .nav-item { padding: 15px; margin: 10px 0; cursor: pointer; border: 1px solid transparent; transition: 0.3s; }
-        .nav-item:hover, .active { background: rgba(187, 134, 252, 0.1); border: 1px solid var(--neon); }
+        /* Sidebar */
+        .sidebar { width: 260px; background: #000000; border-right: 1px solid var(--border); padding: 30px; display: flex; flex-direction: column; }
+        .sidebar h1 { color: #fff; font-size: 1.4rem; letter-spacing: 2px; margin-bottom: 40px; font-weight: 800; border-left: 4px solid var(--accent); padding-left: 15px; }
+        .nav-link { padding: 12px; border-radius: 6px; margin-bottom: 8px; cursor: pointer; color: var(--text); transition: all 0.2s; font-size: 0.9rem; }
+        .nav-link.active { background: var(--panel); color: #fff; border: 1px solid var(--border); }
+        .nav-link:hover:not(.active) { color: #fff; background: rgba(255,255,255,0.05); }
 
-        .main { flex: 1; padding: 40px; display: flex; flex-direction: column; gap: 20px; overflow-y: auto; }
+        /* Content Area */
+        .content { flex: 1; padding: 40px; display: flex; flex-direction: column; gap: 20px; max-width: 1100px; margin: 0 auto; width: 100%; }
+        
+        /* Dashboard Panels */
+        .panel { background: var(--panel); border: 1px solid var(--border); padding: 25px; border-radius: 8px; }
+        .input-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; color: var(--text); font-size: 0.75rem; font-weight: 600; text-transform: uppercase; }
+        input { width: 100%; background: #080809; border: 1px solid var(--border); padding: 12px; border-radius: 4px; color: #fff; outline: none; box-sizing: border-box; font-family: 'Consolas', monospace; }
+        input:focus { border-color: var(--accent); }
+
+        .btn { width: 100%; background: var(--accent); color: #fff; border: none; padding: 14px; border-radius: 4px; font-weight: 600; cursor: pointer; transition: 0.2s; font-size: 0.9rem; }
+        .btn:hover { background: #6d28d9; }
+        .btn-check { background: transparent; border: 1px solid var(--border); margin-top: 10px; color: var(--text); }
+        .btn-check:hover { border-color: var(--accent); color: #fff; }
+
+        /* Console */
+        #console { background: #000000; border: 1px solid var(--border); border-radius: 8px; flex: 1; padding: 20px; font-family: 'Consolas', monospace; font-size: 0.85rem; overflow-y: auto; color: #d4d4d8; line-height: 1.5; }
+        .log-item { margin-bottom: 5px; border-bottom: 1px solid #111; padding-bottom: 3px; }
+        .log-item span { color: var(--accent); margin-right: 10px; }
+
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        
-        .panel { background: var(--card); border: 1px solid #1a1a1a; padding: 25px; box-shadow: 0 0 15px rgba(0,0,0,0.5); }
-        label { display: block; margin-bottom: 10px; font-size: 0.8rem; letter-spacing: 1px; }
-        input { width: 90%; background: #000; border: 1px solid #222; padding: 12px; color: var(--neon); outline: none; margin-bottom: 15px; }
-        input:focus { border-color: var(--neon); }
-
-        button { width: 100%; background: transparent; color: var(--neon); border: 1px solid var(--neon); padding: 15px; cursor: pointer; font-weight: bold; text-transform: uppercase; transition: 0.3s; }
-        button:hover { background: var(--neon); color: #000; box-shadow: 0 0 20px var(--neon); }
-        .check-btn { margin-bottom: 10px; border-color: #6200ee; color: #6200ee; }
-
-        #terminal { background: #000; border: 1px solid #1a1a1a; height: 200px; padding: 15px; font-size: 0.85rem; overflow-y: auto; }
-        .status-msg { margin-top: 10px; font-weight: bold; }
     </style>
 </head>
 <body>
     <div class="sidebar">
-        <h2>DOOMHUB</h2>
-        <div class="nav-item active">CLONER</div>
-        <div class="nav-item">TOKEN CHECKER</div>
+        <h1>DOOMHUB</h1>
+        <div class="nav-link active">Server Cloner</div>
+        <div class="nav-link">Token Checker</div>
+        <div class="nav-link">System Logs</div>
+        <div style="margin-top: auto; color: #3f3f46; font-size: 0.7rem; text-align: center;">VERSION 3.0 ELITE</div>
     </div>
 
-    <div class="main">
-        <div class="grid">
-            <div class="panel">
-                <label>ACCOUNT TOKEN</label>
-                <input type="password" id="token" placeholder="Enter token...">
-                <button class="check-btn" onclick="checkToken()">CHECK TOKEN</button>
-                <div id="token-status" class="status-msg"></div>
+    <div class="content">
+        <div class="panel">
+            <div class="input-group">
+                <label>Discord Account Token</label>
+                <input type="password" id="token" placeholder="Enter authorization token...">
+                <button class="btn btn-check" onclick="checkToken()">Verify Authentication</button>
             </div>
-            <div class="panel">
-                <label>SOURCE ID</label>
-                <input type="text" id="source" placeholder="123456...">
-                <label>TARGET ID</label>
-                <input type="text" id="target" placeholder="789012...">
+            
+            <div class="grid">
+                <div class="input-group">
+                    <label>Source Guild ID</label>
+                    <input type="text" id="source" placeholder="Server ID to copy from">
+                </div>
+                <div class="input-group">
+                    <label>Target Guild ID</label>
+                    <input type="text" id="target" placeholder="Server ID to paste to">
+                </div>
             </div>
+
+            <button class="btn" onclick="start()">Execute Full Replication</button>
         </div>
-        
-        <button onclick="launchClone()" style="font-size: 1.5rem;">START CLONE SEQUENCE</button>
-        
-        <div id="terminal"></div>
+
+        <div id="console"></div>
     </div>
 
     <script>
         async function checkToken() {
             const token = document.getElementById('token').value;
-            const status = document.getElementById('token-status');
-            status.innerText = "CHECKING...";
-            const resp = await fetch('/api/check', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({token})
-            });
-            const data = await resp.json();
-            status.innerText = data.valid ? "TOKEN VALID ✓" : "TOKEN INVALID ✗";
-            status.style.color = data.valid ? "#00ff41" : "#ff003c";
+            const r = await fetch('/api/check', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({token})});
+            const d = await r.json();
+            alert(d.valid ? "Token successfully verified." : "Authentication failed. Invalid token.");
         }
 
-        function launchClone() {
+        function start() {
             fetch('/api/clone', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({
+                method:'POST', 
+                headers:{'Content-Type':'application/json'}, 
+                body:JSON.stringify({
                     token: document.getElementById('token').value,
                     source: document.getElementById('source').value,
                     target: document.getElementById('target').value
@@ -82,14 +90,13 @@
             });
         }
 
-        setInterval(() => {
-            fetch('/api/logs').then(r => r.json()).then(d => {
-                const t = document.getElementById('terminal');
-                t.innerHTML = d.logs.join('<br>');
-                t.scrollTop = t.scrollHeight;
-            });
-        }, 1500);
+        setInterval(async () => {
+            const r = await fetch('/api/logs');
+            const d = await r.json();
+            const con = document.getElementById('console');
+            con.innerHTML = d.logs.map(l => `<div class="log-item"><span>[SYSTEM]</span> ${l}</div>`).join('');
+            con.scrollTop = con.scrollHeight;
+        }, 800);
     </script>
 </body>
 </html>
-
